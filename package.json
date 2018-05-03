@@ -1,0 +1,23 @@
+{
+  "name": "quickapp-redux",
+  "version": "0.0.1",
+  "description": "Quickapp bindings for Redux.js",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mcfe/quickapp-redux.git"
+  },
+  "keywords": [
+    "quickapp",
+    "redux"
+  ],
+  "author": "Kerry Chen <chenkairui@xiaomi.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcfe/quickapp-redux/issues"
+  },
+  "homepage": "https://github.com/mcfe/quickapp-redux#readme"
+}
