@@ -2,9 +2,10 @@
   "name": "quickapp-redux",
   "version": "0.0.1",
   "description": "Quick App bindings for Redux.js",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint --cache --cache-location=./node_modules/.cache/ --ext .js ./ --ignore-pattern '/node_modules*/'",
+    "build": "babel src --out-dir lib",
+    "lint": "eslint src test",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,9 +24,15 @@
   "homepage": "https://github.com/mcfe/quickapp-redux#readme",
   "devDependencies": {
     "@mi/eslint-config-mcfe-base": "^1.2.2",
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.19.1",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["env", {
+      // Log the used targets/plugins/polyfills
+      "debug": true,
+    }],
+  ],
+  "plugins": [
+    // Automatically polyfilling without polluting globals,
+    // this plugin is recommended in a library/tool
+    "transform-runtime",
+  ],
+}
