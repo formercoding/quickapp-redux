@@ -40,7 +40,7 @@ export function connect (
       // so always call the newest `store.dispatch()`
       this[dispatchKey] = (...args) => store.dispatch(...args)
 
-      if (oldOnInit) oldOnInit(...args)
+      if (oldOnInit) oldOnInit.apply(this, ...args)
     }
 
     return componentDef
