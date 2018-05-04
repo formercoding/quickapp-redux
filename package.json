@@ -1,6 +1,6 @@
 {
   "name": "quickapp-redux",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Quick App bindings for Redux.js",
   "main": "lib/index.js",
   "scripts": {
