@@ -1,46 +1,56 @@
-let $storeKey = 'store'
+const $storeKey = 'reduxStore'
+const noop = () => {}
 
-function connect (
+export function connect (
   mapStateToData,
-  component,
-  { dispatchKey = 'dispatch' } = {},
+  {
+    dispatchKey = 'dispatch',
+    componentWillReceiveDataPatch = noop,
+    componentDidUpdateData = noop,
+  } = {},
 ) {
-  const store = component.$app.$def[$storeKey]
+  return function wrapWithConnect (componentDef) {
+    const oldOnInit = componentDef.onInit
+    componentDef.onInit = function onInit (...args) {
+      const store = this.$app.$def[$storeKey]
 
-  // Init store state to component data
-  Object
-    .entries(mapStateToData(store.getState()))
-    .forEach(([key, value]) => {
-      // Use `component.$set()` so component setup two-ways binding
-      component.$set(key, value)
-    })
+      const setStateIntoData = eachEntrySetter => {
+        const state = store.getState()
+        const dataPatch = mapStateToData(state)
+        componentWillReceiveDataPatch(this, dataPatch, state)
+        Object
+          .entries(dataPatch)
+          .forEach(eachEntrySetter)
+        componentDidUpdateData(this, dataPatch, state)
+      }
 
-  // Update store state to component data when changed
-  store.subscribe(() => {
-    Object
-      .entries(mapStateToData(store.getState()))
-      .forEach(([key, value]) => {
-        component[key] = value
+      // Init store state to component data.
+      // Use `component.$set()` so component setup two-ways binding.
+      setStateIntoData(([key, value]) => this.$set(key, value))
+
+      // Update store state to component data when changed
+      store.subscribe(() => {
+        setStateIntoData(([key, value]) => {
+          this[key] = value
+        })
       })
-  })
 
-  // Provide `this.dispatch()` in components.
-  // `store.dispatch` would be overridded when apply middleware at runtime,
-  // so always call the newest `store.dispatch()`
-  component[dispatchKey] = (...args) => store.dispatch(...args)
+      // Provide `this.dispatch()` in components.
+      // `store.dispatch` would be overridded when apply middleware at runtime,
+      // so always call the newest `store.dispatch()`
+      this[dispatchKey] = (...args) => store.dispatch(...args)
+
+      if (oldOnInit) oldOnInit(...args)
+    }
+
+    return componentDef
+  }
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function connectApp (
-  store,
-  appDef,
-  { storeKey = $storeKey, connectKey = 'connect' } = {},
-) {
-  if (storeKey !== $storeKey) $storeKey = storeKey
-
+export function connectApp (store, appDef) {
   // So can access `this.$app.$def.store` in components
-  appDef[storeKey] = store
-  appDef[connectKey] = connect
+  appDef[$storeKey] = store
 
   return appDef
 }

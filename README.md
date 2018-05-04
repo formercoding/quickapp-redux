@@ -29,17 +29,26 @@ export default connectApp(store, {
 
 ```javascript
 // components/foo/foo.js
-export default {
-  onInit () {
-    this.$app.$def.connect(function mapStateToData ({ a }) {
-      return { a }
-    }, this)
-  },
+import { connect } from 'quickapp-redux'
+
+const foo = {
   onClickSomething () {
-    // 先 `connect()`，才能使用 `this.dispatch()`
     this.dispatch({ type: 'INCREASE_A' })
   },
 }
+
+export default connect(
+  function mapStateToData ({ a }) {
+    return { a }
+  },
+  {
+    // Optionally do something after map state to data,
+    // for example update UI that are not the template driven by data.
+    componentWillReceiveDataPatch: (component, dataPatch, state) => {
+      component.$page.setTitleBar({ text: dataPatch.a })
+    },
+  }
+)(foo)
 ```
 
 ```javascript
