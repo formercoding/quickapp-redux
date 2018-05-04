@@ -1,14 +1,15 @@
 let $storeKey = 'store'
 
 function connect (
+  mapStateToData,
   component,
-  { mapStateToDataKey = 'mapStateToData', dispatchKey = 'dispatch' } = {},
+  { dispatchKey = 'dispatch' } = {},
 ) {
   const store = component.$app.$def[$storeKey]
 
   // Init store state to component data
   Object
-    .entries(this[mapStateToDataKey](store.getState()))
+    .entries(mapStateToData(store.getState()))
     .forEach(([key, value]) => {
       // Use `component.$set()` so component setup two-ways binding
       component.$set(key, value)
@@ -17,7 +18,7 @@ function connect (
   // Update store state to component data when changed
   store.subscribe(() => {
     Object
-      .entries(this[mapStateToDataKey](store.getState()))
+      .entries(mapStateToData(store.getState()))
       .forEach(([key, value]) => {
         component[key] = value
       })
