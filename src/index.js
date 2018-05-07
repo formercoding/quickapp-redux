@@ -2,7 +2,7 @@ const $storeKey = 'reduxStore'
 const noop = () => {}
 
 export function connect (
-  mapStateToData,
+  mapStateToData = () => ({}),
   {
     dispatchKey = 'dispatch',
     componentWillReceiveDataPatch = noop,
