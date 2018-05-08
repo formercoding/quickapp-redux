@@ -11,6 +11,7 @@ export function connect (
 ) {
   return function wrapWithConnect (componentDef) {
     const oldOnInit = componentDef.onInit
+    let unsubscribe
     componentDef.onInit = function onInit (...args) {
       const store = this.$app.$def[$storeKey]
 
@@ -29,7 +30,7 @@ export function connect (
       setStateIntoData(([key, value]) => this.$set(key, value))
 
       // Update store state to component data when changed
-      store.subscribe(() => {
+      unsubscribe = store.subscribe(() => {
         setStateIntoData(([key, value]) => {
           this[key] = value
         })
@@ -43,6 +44,9 @@ export function connect (
       if (oldOnInit) oldOnInit.apply(this, args)
     }
 
+    componentDef.onDestroy = function onDestroy () {
+      unsubscribe()
+    }
     return componentDef
   }
 }
