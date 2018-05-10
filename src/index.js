@@ -7,7 +7,7 @@ export function connect (
     dispatchKey = 'dispatch',
     componentWillReceiveDataPatch = noop,
     componentDidUpdateData = noop,
-  } = {},
+  } = {}
 ) {
   return function wrapWithConnect (componentDef) {
     const oldOnInit = componentDef.onInit

@@ -1,6 +1,11 @@
+const lint = require('@mi/eslint-config-mcfe-base').default
 module.exports = {
-  extends: '@mi/eslint-config-mcfe-base',
+  extends: lint,
   rules: {
     // add project level rules if need.
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
   },
 }
