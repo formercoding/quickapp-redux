@@ -3,8 +3,4 @@ module.exports = {
   rules: {
     // add project level rules if need.
   },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
 }
