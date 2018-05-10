@@ -7,7 +7,7 @@ export function connect (
     dispatchKey = 'dispatch',
     componentWillReceiveDataPatch = noop,
     componentDidUpdateData = noop,
-  } = {}
+  } = {},
 ) {
   return function wrapWithConnect (componentDef) {
     const oldOnInit = componentDef.onInit
@@ -47,7 +47,7 @@ export function connect (
 
     componentDef.onDestroy = function onDestroy (...args) {
       unsubscribe()
-      if (oldOnInit) oldOnInit.apply(this, args)
+      if (oldOnDestroy) oldOnDestroy.apply(this, args)
     }
     return componentDef
   }
