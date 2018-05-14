@@ -11,7 +11,7 @@ export function connect (
 ) {
   return function wrapWithConnect (componentDef) {
     const oldOnInit = componentDef.onInit
-    const oldOnDestroy = componentDef.oldOnDestroy
+    const oldOnDestroy = componentDef.onDestroy
     let unsubscribe
     componentDef.onInit = function onInit (...args) {
       const store = this.$app.$def[$storeKey]
@@ -47,7 +47,7 @@ export function connect (
 
     componentDef.onDestroy = function onDestroy (...args) {
       unsubscribe()
-      if (oldOnInit) oldOnInit.apply(this, args)
+      if (oldOnDestroy) oldOnDestroy.apply(this, args)
     }
     return componentDef
   }
